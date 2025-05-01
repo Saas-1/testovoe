@@ -1,0 +1,189 @@
+basePath: /
+definitions:
+  entities.FIO:
+    properties:
+      name:
+        type: string
+      patronymic:
+        type: string
+      surname:
+        type: string
+    required:
+    - name
+    - surname
+    type: object
+  entities.Person:
+    properties:
+      age:
+        type: integer
+      gender:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      nationality:
+        type: string
+      patronymic:
+        type: string
+      surname:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@example.com
+    name: Support
+    url: http://example.com/support
+  description: This is a simple API for managing people.
+  license:
+    name: MIT
+    url: http://opensource.org/licenses/MIT
+  termsOfService: http://example.com/terms/
+  title: Example API
+  version: "1.0"
+paths:
+  /add-person:
+    post:
+      consumes:
+      - application/json
+      description: Add a new person to the database
+      parameters:
+      - description: Person data
+        in: body
+        name: person
+        required: true
+        schema:
+          $ref: '#/definitions/entities.FIO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Person'
+        "400":
+          description: Error decoding JSON
+          schema:
+            type: string
+        "500":
+          description: Error saving person
+          schema:
+            type: string
+      summary: Add a person
+  /ascname:
+    get:
+      description: Retrieve people by surname
+      parameters:
+      - description: Surname
+        in: query
+        name: surname
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entities.Person'
+            type: array
+        "500":
+          description: Database error
+          schema:
+            type: string
+      summary: Get people by surname
+  /ascsurname:
+    get:
+      description: Retrieve people by first name
+      parameters:
+      - description: First name
+        in: query
+        name: name
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entities.Person'
+            type: array
+        "500":
+          description: Database error
+          schema:
+            type: string
+      summary: Get people by first name
+  /delete-person:
+    delete:
+      description: Delete a person from the database by ID
+      parameters:
+      - description: Person ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Person deleted successfully
+          schema:
+            type: string
+        "400":
+          description: ID not found in query parameters
+          schema:
+            type: string
+        "500":
+          description: Failed to delete person
+          schema:
+            type: string
+      summary: Delete a person
+  /name:
+    get:
+      description: Retrieve people from the database by name
+      parameters:
+      - description: Name of the person
+        in: query
+        name: name
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entities.Person'
+            type: array
+        "500":
+          description: Database error
+          schema:
+            type: string
+      summary: Get people by name
+  /update-person:
+    put:
+      description: Update a person's details in the database
+      parameters:
+      - description: Person ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      - description: Updated person data
+        in: body
+        name: person
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Person'
+      responses:
+        "200":
+          description: Person updated successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "500":
+          description: Failed to update person
+          schema:
+            type: string
+      summary: Update a person
+swagger: "2.0"
